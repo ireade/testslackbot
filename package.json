@@ -1,0 +1,14 @@
+{
+  "name": "slack-lunch-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "caballunchbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "botkit": "^0.4.5"
+  }
+}
