@@ -1,3 +1,5 @@
+"strict mode";
+
 const https = require('https');
 const Botkit = require('botkit');
 
