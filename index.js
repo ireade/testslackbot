@@ -1,7 +1,7 @@
 const https = require('https');
 const Botkit = require('botkit');
 
-const token = require('./token');
+const token = process.ENV.SLACK_TOKEN || require('./token');
 
 const controller = Botkit.slackbot({
   debug: false,
