@@ -48,7 +48,6 @@ function getUserChannelID(userID, callback) {
 
 function Order(bot, convo, initiator) {
 
-
   this.bot = bot;
   this.convo = convo;
 
@@ -143,7 +142,7 @@ Order.prototype.getRestaurant = function() {
 
 Order.prototype.getEaters = function() {
 
-  const instruction = "Say `everyone` or just list the `@` usernames of the people I should collect from in one message (like this - `@user @user`)"
+  const instruction = "Say `everyone` or just list the `@` usernames of the people I should collect from in one message (like this - `@user @user`)";
   const message = "Next, who should I collect orders from? " + instruction;
 
   this.convo.ask(message, (response,convo) => {
