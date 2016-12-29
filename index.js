@@ -3,20 +3,21 @@
 const https = require('https');
 const Botkit = require('botkit');
 
-const token = process.ENV.SLACK_TOKEN || require('./token');
+const token = process.env.SLACK_TOKEN || require('./token');
 
 const controller = Botkit.slackbot({
   debug: false,
   interactive_replies: true
-}); // Configure for single team
+});
+
+let payload;
 
 controller.spawn({
   token: token
 }).startRTM(function(err,bot,payload) {
   if (err) throw new Error(err)
+  payload = payload;
 });
-
-
 
 
 
@@ -77,52 +78,30 @@ Order.prototype.start = function() {
 
 Order.prototype.confirmStart = function() {
 
-  this.convo.ask({
-      attachments:[
-          {
-              title: "I see you're hungry! Me too. Should we order lunch now?",
-              callback_id: 'order_confirm_start',
-              attachment_type: 'default',
-              actions: [
-                  {
-                      "name":"yes",
-                      "text": "Yes",
-                      "value": "yes",
-                      "type": "button",
-                  },
-                  {
-                      "name":"no",
-                      "text": "No",
-                      "value": "no",
-                      "type": "button",
-                  }
-              ]
-          }
-      ]
-  },[
-      {
-          pattern: "yes",
-          callback: function(reply, convo) {
-              convo.next();
-          }
-      },
-      {
-          pattern: "no",
-          callback: function(reply, convo) {
-            this.bot.say({
-              text: "I guess you're not that hungry then. :expressionless: ",
-              channel: response.channel
-            });
-            convo.stop();
-          }
-      },
-      {
-          default: true,
-          callback: function(reply, convo) {
-              // do nothing
-          }
-      }
-  ]);
+  const message = "I see you're hungry! Me too. Should we order lunch now? Say `yes` or `no`";
+
+  this.convo.ask(message, (response, convo) => {
+
+    switch(response.text.toLowerCase()) {
+      case 'no':
+        this.bot.say({
+          text: "I guess you're not that hungry then. :expressionless: ",
+          channel: response.channel
+        });
+        convo.stop();
+        break;
+      case 'yes':
+        convo.next();
+        break;
+      default:
+        this.bot.say({
+         text: "Sorry I didn't get that. Please either say `yes` or `no`.",
+         channel: response.channel
+        });
+        break;
+    }
+
+	});
 
 
 }
@@ -173,7 +152,7 @@ Order.prototype.getEaters = function() {
 
     else {
 
-      bot.say({
+      this.bot.say({
         text: "Sorry I didn't get that. Who's orders should I collect? " + instruction,
         channel: response.channel
       });
@@ -190,33 +169,30 @@ Order.prototype.getOrderer = function() {
 
   this.convo.ask(message, (response,convo) => {
 
-
 		if ( response.text.toLowerCase() === 'me' ) {
-
       this.orderer = response.user;
-			convo.sayFirst("Cool, I will collect the orders and send them to you. _scurries away_ :runner::skin-tone-5:");
-
 		} else {
-
       this.orderer = response.text.split('@')[1];
 			this.orderer = this.orderer.split(">")[0];
-
-			convo.sayFirst("Cool, I will collect the orders and send them to <@"+this.orderer+">. _scurries away_ :runner::skin-tone-5:");
-
-			//orderLunch_informOrderer(bot);
 		}
 
+    console.log("this.orderer is", this.orderer);
 
-		// GET EVERYONE'S ORDERS
-		//orderLunch_getEveryonesOrder(bot);
-
-    console.log(this.orderer)
-    console.log(this.restaurant)
-    console.log(this.initiator)
-    console.log(this.eaters)
+    convo.stop();
 
 
-		convo.stop();
+    const finalMessage = `Great! Here are the details. We are ordering from *${this.restaurant}*. <@${this.orderer}> is placing the order so I will go collect orders from *${this.eaters}* and report back to them.`;
+
+
+    this.bot.say({
+      text: finalMessage,
+      channel: response.channel
+    });
+
+    setTimeout(() => {
+      this.informOrderer();
+    }, 1000);
+
 
 	});
 }
@@ -233,8 +209,8 @@ Order.prototype.informOrderer = function() {
     message = "<@"+this.initiator+"> has nominated you to collect lunch! I will be sending you everyone's orders as they come in. \n \n "+message;
   }
 
-  getUserChannelID(this.orderer, function(dmID) {
-    bot.say({
+  getUserChannelID(this.orderer, (dmID) => {
+    this.bot.say({
       text: message,
       channel: dmID
     });
