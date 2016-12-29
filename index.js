@@ -78,30 +78,77 @@ Order.prototype.start = function() {
 
 Order.prototype.confirmStart = function() {
 
-  const message = "I see you're hungry! Me too. Should we order lunch now? Say `yes` or `no`";
+  this.convo.ask({
+      attachments:[
+          {
+              title: "I see you're hungry! Me too. Should we order lunch now?",
+              callback_id: 'order_confirm_start',
+              attachment_type: 'default',
+              actions: [
+                  {
+                      "name":"yes",
+                      "text": "Yes",
+                      "value": "yes",
+                      "type": "button",
+                  },
+                  {
+                      "name":"no",
+                      "text": "No",
+                      "value": "no",
+                      "type": "button",
+                  }
+              ]
+          }
+      ]
+  },[
+      {
+          pattern: "yes",
+          callback: function(reply, convo) {
+              convo.next();
+          }
+      },
+      {
+          pattern: "no",
+          callback: function(reply, convo) {
+            this.bot.say({
+              text: "I guess you're not that hungry then. :expressionless: ",
+              channel: response.channel
+            });
+            convo.stop();
+          }
+      },
+      {
+          default: true,
+          callback: function(reply, convo) {
+              // do nothing
+          }
+      }
+  ]);
 
-  this.convo.ask(message, (response, convo) => {
-
-    switch(response.text.toLowerCase()) {
-      case 'no':
-        this.bot.say({
-          text: "I guess you're not that hungry then. :expressionless: ",
-          channel: response.channel
-        });
-        convo.stop();
-        break;
-      case 'yes':
-        convo.next();
-        break;
-      default:
-        this.bot.say({
-         text: "Sorry I didn't get that. Please either say `yes` or `no`.",
-         channel: response.channel
-        });
-        break;
-    }
-
-	});
+  // const message = "I see you're hungry! Me too. Should we order lunch now? Say `yes` or `no`";
+  //
+  // this.convo.ask(message, (response, convo) => {
+  //
+  //   switch(response.text.toLowerCase()) {
+  //     case 'no':
+  //       this.bot.say({
+  //         text: "I guess you're not that hungry then. :expressionless: ",
+  //         channel: response.channel
+  //       });
+  //       convo.stop();
+  //       break;
+  //     case 'yes':
+  //       convo.next();
+  //       break;
+  //     default:
+  //       this.bot.say({
+  //        text: "Sorry I didn't get that. Please either say `yes` or `no`.",
+  //        channel: response.channel
+  //       });
+  //       break;
+  //   }
+  //
+	// });
 
 
 }
