@@ -3,7 +3,7 @@
 const https = require('https');
 const Botkit = require('botkit');
 
-const token = process.env.SLACK_TOKEN || null;
+const token = process.env.SLACK_TOKEN;
 
 let payload;
 
@@ -14,7 +14,6 @@ const controller = Botkit.slackbot({
 });
 
 
-// Assume single team mode if we have a SLACK_TOKEN
 if (token) {
   console.log('Starting in single-team mode')
   controller.spawn({
@@ -24,17 +23,18 @@ if (token) {
     if (err) {
       throw new Error(err)
     }
-
     console.log('Connected to Slack RTM');
-    payload = payload;
   })
-// Otherwise assume multi-team mode - setup beep boop resourcer connection
+
 } else {
   console.log('Starting in Beep Boop multi-team mode')
   require('beepboop-botkit').start(controller, { debug: true })
 }
 
 
+
+
+/////
 
 function getUserChannelID(userID, callback) {
 	https.get("https://slack.com/api/im.open?token="+token+"&user="+userID+"&pretty=1", function(response) {
