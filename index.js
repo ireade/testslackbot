@@ -3,20 +3,36 @@
 const https = require('https');
 const Botkit = require('botkit');
 
-const token = process.env.SLACK_TOKEN || require('./token');
+const token = process.env.SLACK_TOKEN || require('./token') || null;
+
+let payload;
 
 const controller = Botkit.slackbot({
   debug: false,
-  interactive_replies: true
+  interactive_replies: true,
+  retry: Infinity
 });
 
-let payload;
-controller.spawn({
-  token: token
-}).startRTM(function(err,bot,payload) {
-  if (err) throw new Error(err)
-  payload = payload;
-});
+
+// Assume single team mode if we have a SLACK_TOKEN
+if (token) {
+  console.log('Starting in single-team mode')
+  controller.spawn({
+    token: token,
+    retry: Infinity
+  }).startRTM(function (err, bot, payload) {
+    if (err) {
+      throw new Error(err)
+    }
+
+    console.log('Connected to Slack RTM');
+    payload = payload;
+  })
+// Otherwise assume multi-team mode - setup beep boop resourcer connection
+} else {
+  console.log('Starting in Beep Boop multi-team mode')
+  require('beepboop-botkit').start(controller, { debug: true })
+}
 
 
 

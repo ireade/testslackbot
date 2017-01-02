@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "beepboop-botkit": "^1.4.1",
     "botkit": "^0.4.5"
   }
 }

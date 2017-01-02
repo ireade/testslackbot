@@ -101,6 +101,24 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
+beepboop-botkit:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/beepboop-botkit/-/beepboop-botkit-1.4.1.tgz#b8fe7550e0769da4195c15dfef727e3993f79f0c"
+  dependencies:
+    beepboop "^1.1.0"
+    deap "^1.0.0"
+
+beepboop@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/beepboop/-/beepboop-1.1.1.tgz#d7aefbecd1c24dc0d7a76c838bd9f2a264b91c05"
+  dependencies:
+    back "^1.0.1"
+    deap "^1.0.0"
+    eventemitter2 "^0.4.14"
+    https "^1.0.0"
+    loglevel "^1.4.0"
+    ws "^1.0.1"
+
 bl@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/bl/-/bl-1.1.2.tgz#fdca871a99713aa00d19e3bbba41c44787a65398"
@@ -315,6 +333,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+deap@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/deap/-/deap-1.0.0.tgz#b148bf82430a27699b7483a03eb6b67585bfc888"
+
 debug@~2.2.0, debug@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
@@ -379,6 +401,10 @@ escape-string-regexp@^1.0.2:
 etag@~1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.7.0.tgz#03d30b5f67dd6e632d2945d30d6652731a34d5d8"
+
+eventemitter2@^0.4.14:
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-0.4.14.tgz#8f61b75cde012b2e9eb284d4545583b5643b61ab"
 
 express@^4.13.3:
   version "4.14.0"
@@ -545,6 +571,10 @@ https-proxy-agent@^1.0.0:
     agent-base "2"
     debug "2"
     extend "3"
+
+https@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/https/-/https-1.0.0.tgz#3c37c7ae1a8eeb966904a2ad1e975a194b7ed3a4"
 
 iconv-lite@0.4.13:
   version "0.4.13"
@@ -723,6 +753,10 @@ lodash.once@^4.0.0:
 lodash@^4.14.0:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
+
+loglevel@^1.4.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.4.1.tgz#95b383f91a3c2756fd4ab093667e4309161f2bcd"
 
 map-obj@^1.0.0:
   version "1.0.1"
@@ -1233,7 +1267,7 @@ wrap-fn@^0.1.0:
   dependencies:
     co "3.1.0"
 
-ws@^1.1.1:
+ws@^1.0.1, ws@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-1.1.1.tgz#082ddb6c641e85d4bb451f03d52f06eabdb1f018"
   dependencies:
