@@ -3,7 +3,7 @@
 const https = require('https');
 const Botkit = require('botkit');
 
-const token = process.env.SLACK_TOKEN || require('./token') || null;
+const token = process.env.SLACK_TOKEN || null;
 
 let payload;
 
