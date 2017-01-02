@@ -1,52 +1,4 @@
-"strict mode";
-
-const https = require('https');
-const Botkit = require('botkit');
-
-const token = process.env.SLACK_TOKEN || require('./token');
-
-const controller = Botkit.slackbot({
-  debug: false,
-  interactive_replies: true
-});
-
-let payload;
-controller.spawn({
-  token: token
-}).startRTM(function(err,bot,payload) {
-  if (err) throw new Error(err)
-  payload = payload;
-});
-
-
-
-function getUserChannelID(userID, callback) {
-	https.get("https://slack.com/api/im.open?token="+token+"&user="+userID+"&pretty=1", function(response) {
-
-		var body = "";
-	    response.on('data', function(d) {
-	       	body += d;
-	    });
-
-	    response.on('end', function() {
-	        var parsed = JSON.parse(body);
-
-	        if ( parsed.ok == true ) {
-	        	var channelID = parsed.channel.id;
-		        callback(channelID);
-	        }
-
-	    });
-	});
-}
-
-
-
-/////
-
-
-
-function Order(bot, convo, initiator) {
+module.exports = function Order(bot, convo, initiator) {
 
   this.bot = bot;
   this.convo = convo;
@@ -274,18 +226,3 @@ Order.prototype.collectOrders = function() {
 Order.prototype.reportOrder = function() {
 
 }
-
-
-
-////////
-
-
-
-
-controller.hears(['order lunch'],'direct_message,direct_mention,mention', function(bot,message) {
-
-  bot.startConversation(message, function(err, convo) {
-    new Order(bot, convo, message.user);
-  })
-
-});
